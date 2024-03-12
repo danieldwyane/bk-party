@@ -1,33 +1,17 @@
 package com.company.microservice.config;
 
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+@Configuration
+public class CorsFilter implements WebMvcConfigurer {
 
-@Component
-@Order(Ordered.HIGHEST_PRECEDENCE)
-public class CorsFilter implements Filter{
-
-	@Override
-	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
-			throws IOException, ServletException {
-        final HttpServletResponse response = (HttpServletResponse) res;
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE, HEAD, PATH, TRACE");
-        response.setHeader("Access-Control-Max-Age", "36000");
-        response.setHeader("Access-Control-Allow-Headers", "X-TenantID, X-Gravitee-Api-Key, content-type, authorization");
-        if (HttpMethod.OPTIONS.name().equalsIgnoreCase(((HttpServletRequest) req).getMethod())) {
-            response.setStatus(HttpServletResponse.SC_OK);
-        } else {
-            chain.doFilter(req, res);
-        }
-		
-	}
-
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**") // Permite el acceso desde cualquier origen
+                .allowedOrigins("https://site-production-3dda.up.railway.app")
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedHeaders("*");
+    }
 }
