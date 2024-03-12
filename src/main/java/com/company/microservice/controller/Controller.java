@@ -5,10 +5,7 @@ import com.company.microservice.model.Regalos;
 import com.company.microservice.service.RegalosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,11 +25,13 @@ public class Controller {
         return regalosService.findAll();
     }
 
+    @CrossOrigin(origins = "https://site-production-3dda.up.railway.app/")
     @GetMapping("/findAvailable")
     public List<Regalos> findAvailable() {
         return regalosService.findAvailable();
     }
 
+    @CrossOrigin(origins = "https://site-production-3dda.up.railway.app/")
     @PostMapping()
     public String save(@RequestBody RequestDto requestDto) {
         regalosService.save(requestDto);
