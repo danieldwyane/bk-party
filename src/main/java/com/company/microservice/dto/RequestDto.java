@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RequestDto {
-    private Long idGift;
+    private Long[] idGift;
     private String name;
 }

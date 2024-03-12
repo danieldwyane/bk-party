@@ -28,14 +28,16 @@ public class RegalosService {
     }
 
     public void save(RequestDto requestDto) {
-        Optional<Regalos> regalo = regalosRepository.findById(requestDto.getIdGift());
-        if (regalo.isPresent()) {
-            regalo.get().setQuantity(regalo.get().getQuantity() - 1);
+        for (Long rega : requestDto.getIdGift()) {
+            Optional<Regalos> regalo = regalosRepository.findById(rega);
+            if (regalo.isPresent()) {
+                regalo.get().setQuantity(regalo.get().getQuantity() - 1);
+            }
+            regalosRepository.save(regalo.get());
+            Invitado invitado = new Invitado();
+            invitado.setGuestName(requestDto.getName());
+            invitado.setRegalos(regalo.get());
+            invitadoRepository.save(invitado);
         }
-        regalosRepository.save(regalo.get());
-        Invitado invitado = new Invitado();
-        invitado.setGuestName(requestDto.getName());
-        invitado.setRegalos(regalo.get());
-        invitadoRepository.save(invitado);
     }
 }
